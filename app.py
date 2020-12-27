@@ -9,7 +9,7 @@ import yaml, pickle
 from importlib import reload
 from utils import read, clean_text
 
-#filepath = Path.cwd() / 'Data'     # wikipedia language identification data 2018 
+#filepath = Path.cwd() / 'data'     # wikipedia language identification data 2018 
 
 # Import glossary for acronyms:
 #--------------------------------

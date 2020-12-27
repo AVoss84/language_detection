@@ -16,7 +16,7 @@ current_dir = Path.cwd()
 #home_dir = Path.home()
 #files = os.listdir(os.curdir)
 
-filepath = Path.cwd() / 'Data'     # wikipedia language identification data 2018 
+filepath = Path.cwd() / 'data'     # wikipedia language identification data 2018 
 
 # Load data:
 #-------------
@@ -44,6 +44,8 @@ filter_list = ['deu', 'fra', 'eng', 'est', 'fin', 'nld', 'rus', 'swe', 'zho', 't
                #'heb', 'hrv', 'ind', 'lat',
                'nno', 'pol', 'por', 'spa', 'sqi', 'srp', 'zh-yue',
                'slk','dan', 'ces', 'ron','ita', 'hun', 'jpn']
+
+filter_list = ['deu', 'fra']
 
 train_set = train[train.label.isin(filter_list)]
 test_set = test[test.label.isin(filter_list)]
@@ -80,6 +82,8 @@ pipeline = Pipeline([
 
 # Train:
 trained = pipeline.fit(train_set['text'], train_set['label'])
+
+#post_prob = pipeline.predict_proba(train_set['text'])
 
 #-------------
 # Save model:
