@@ -40,12 +40,10 @@ with open('glossary.yaml') as f:
 # Filter languages to be trained on:
 filter_list = ['deu', 'fra', 'eng', 'est', 'fin', 'nld', 'rus', 'swe', 'zho', 'tha', 
                #'est', 'ukr', 'mya'
-               #'tur', #'vie', 'ara', 'bul', 'kor', 'mal', 
+               'tur', #'vie', 'ara', 'bul', 'kor', 'mal', 
                #'heb', 'hrv', 'ind', 'lat',
                'nno', 'pol', 'por', 'spa', 'sqi', 'srp', 'zh-yue',
                'slk','dan', 'ces', 'ron','ita', 'hun', 'jpn']
-
-filter_list = ['deu', 'fra']
 
 train_set = train[train.label.isin(filter_list)]
 test_set = test[test.label.isin(filter_list)]
@@ -57,7 +55,6 @@ print(train_set.shape)
 print(test_set.shape)
 #print(any(train.label.isin(filter_list)))
 #print(any(test.label.isin(filter_list)))
-
 
 
 from sklearn.pipeline import Pipeline
