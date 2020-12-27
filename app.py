@@ -10,6 +10,8 @@ import warnings
 #from importlib import reload
 from utils import read, clean_text
 
+# Surpress warnings due to different sklearn versions
+# used for saving and loading
 warnings.filterwarnings("ignore")
 
 #filepath = Path.cwd() / 'data'     # wikipedia language identification data 2018 
