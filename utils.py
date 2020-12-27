@@ -1,4 +1,3 @@
-#from pathlib import Path
 import random, sys, os, re, nltk, string, tarfile
 #from collections import Counter, defaultdict
 import numpy as np
