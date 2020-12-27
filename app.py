@@ -6,8 +6,11 @@ import numpy as np
 import pandas as pd
 from copy import deepcopy
 import yaml, pickle
-from importlib import reload
+import warnings
+#from importlib import reload
 from utils import read, clean_text
+
+warnings.filterwarnings("ignore")
 
 #filepath = Path.cwd() / 'data'     # wikipedia language identification data 2018 
 
@@ -20,6 +23,7 @@ with open('glossary.yaml') as f:
 #----------------------------
 filename = 'trained_model.pkl'
 loaded_model = pickle.load(open(filename, 'rb'))
+print('Model loaded.')
 
 #----------------
 # Test sentence:
@@ -38,3 +42,10 @@ new_sent = "ฉันอยากบอกสามีของฉันว่�
 #---------
 fore = loaded_model.predict(pd.Series([new_sent]))[0]
 print('Prediction: {}'.format(glossary['label_desc'].get(fore, 'Unknown')))
+
+
+
+
+
+
+
