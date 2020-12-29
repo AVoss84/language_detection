@@ -1,3 +1,4 @@
+from flask import Flask, request, render_template
 from pathlib import Path
 import sys, os, warnings
 import numpy as np
@@ -9,8 +10,6 @@ import yaml, pickle
 # used for saving and loading
 warnings.filterwarnings("ignore")
 
-#filepath = Path.cwd() / 'data'     # wikipedia language identification data 2018 
-
 # Import glossary for acronyms:
 #--------------------------------
 with open('glossary.yaml') as f:    
@@ -18,7 +17,6 @@ with open('glossary.yaml') as f:
 
 #-----------------------------------------------------------------------
 #-----------------------------------------------------------------------
-from flask import Flask, request, render_template
 
 app = Flask(__name__)
 
