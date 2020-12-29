@@ -1,1 +1,9 @@
 scikit-learn==0.23.0    #0.22.2.post1
+flask
+flask_restful
+pathlib
+pandas
+nltk
+numpy>=1.18.5
+pickle
+PyYAML==5.3.1
