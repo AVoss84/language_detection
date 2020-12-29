@@ -6,7 +6,7 @@ from nltk.tokenize import word_tokenize
 from sklearn.base import BaseEstimator, TransformerMixin
 from copy import deepcopy
 
-nltk.download('punkt')
+#nltk.download('punkt')
  
 def read(file):
     '''Returns contents of a file'''

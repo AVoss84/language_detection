@@ -8,7 +8,16 @@ from copy import deepcopy
 import yaml, pickle
 import warnings
 #from importlib import reload
-from utils import read, clean_text
+
+
+from sklearn.pipeline import Pipeline
+from sklearn.naive_bayes import MultinomialNB
+from sklearn.linear_model import LogisticRegression
+from sklearn.preprocessing import StandardScaler
+from sklearn.neural_network import MLPClassifier
+from sklearn.feature_extraction.text import CountVectorizer, ENGLISH_STOP_WORDS
+from sklearn.metrics import confusion_matrix, classification_report
+
 
 # Surpress warnings due to different sklearn versions
 # used for saving and loading
@@ -23,15 +32,20 @@ with open('glossary.yaml') as f:
 
 # Load the model from disk
 #----------------------------
-filename = 'trained_model.pkl'
-loaded_model = pickle.load(open(filename, 'rb'))
-print('Model loaded.')
+#filename = 'trained_model.pkl'
+#loaded_model = pickle.load(open(filename, 'rb'))
+#print('Model loaded.')
 
 #-----------------------------------------------------------------------
 #-----------------------------------------------------------------------
 from flask import Flask, request, render_template
 
 app = Flask(__name__)
+
+my_home_dir=os.environ['HOME'] 
+file_abs_path = os.path.join(my_home_dir,"utils.py")
+sys.path.append(file_abs_path)
+
 
 @app.route('/')
 def my_form():
@@ -41,10 +55,16 @@ def my_form():
 def my_form_post():
     text = request.form['text']
 
+    from utils import clean_text 
+    filename = 'trained_model.pkl'
+    loaded_model = pickle.load(open(filename, 'rb'))
+    print('Model loaded.')
+
+
     # Predict
     #---------
     fore = loaded_model.predict(pd.Series([text]))[0]
-    print('Prediction: {}'.format(glossary['label_desc'].get(fore, 'Unknown')))
+    #print('Prediction: {}'.format(glossary['label_desc'].get(fore, 'Unknown')))
     #processed_text = 'You inserted: {}'.format(text)
     processed_text = 'Prediction: {}'.format(glossary['label_desc'].get(fore, 'Unknown'))
     return processed_text
