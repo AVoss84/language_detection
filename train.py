@@ -7,7 +7,7 @@ import pandas as pd
 from copy import deepcopy
 from importlib import reload
 import yaml, pickle
-from utils import read, clean_text
+#from utils import read, clean_text
 import utils
 
 reload(utils)
@@ -40,10 +40,11 @@ with open('glossary.yaml') as f:
 # Filter languages to be trained on:
 filter_list = ['deu', 'fra', 'eng', 'est', 'fin', 'nld', 'rus', 'swe', 'zho', 'tha', 
                #'est', 'ukr', 'mya'
-               'tur', #'vie', 'ara', 'bul', 'kor', 'mal', 
-               #'heb', 'hrv', 'ind', 'lat',
+               'tur', #'vie',
+               'heb', 'hrv', 'ind', 'lat',
+               #'kor', 'mal', 
                'nno', 'pol', 'por', 'spa', 'sqi', 'srp', 'zh-yue',
-               'slk','dan', 'ces', 'ron','ita', 'hun', 'jpn']
+               'slk','dan', 'ces', 'ron','ita', 'hun', 'bul', 'ara', 'jpn']
 
 train_set = train[train.label.isin(filter_list)]
 test_set = test[test.label.isin(filter_list)]
@@ -106,12 +107,12 @@ new_sent = "Hier, j'étais en ville. Le temps était super beau."      # french
 new_sent = "Heri eram in civitate. Super tempestas est delicatus."     # latin
 new_sent = "Ieri ero in città. Il tempo è stato bellissimo."     # italian
 new_sent = "Igår var jag i staden. Vädret var supertrevligt."    # sweden
-#new_sent = "ฉันอยากบอกสามีของฉันว่าฉันอยากได้แหวนเพชร ฮี่ฮี่ฮี่"     # if not working check result of preprocessing!!
+new_sent = "ฉันอยากบอกสามีของฉันว่าฉันอยากได้แหวนเพชร ฮี่ฮี่ฮี่"     # if not working check result of preprocessing!!
 
 # Predict
 fore = pipeline.predict(pd.Series([new_sent]))[0]
 print('Prediction: {}'.format(glossary['label_desc'].get(fore, 'Unknown')))
 
-clt = clean_text(verbose=False)
-clt.fit_transform(pd.Series([new_sent]))
+#clt = clean_text(verbose=False)
+#clt.fit_transform(pd.Series([new_sent]))
     

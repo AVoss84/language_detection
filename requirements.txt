@@ -1,4 +1,4 @@
-scikit-learn==0.23.0    #0.22.2.post1
+scikit-learn==0.22.2.post1    
 flask
 flask_restful
 pathlib
