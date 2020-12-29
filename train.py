@@ -67,7 +67,7 @@ from sklearn.metrics import confusion_matrix, classification_report
 
 
 pipeline = Pipeline([
-   ('cleaner', clean_text(verbose=False)),
+   ('cleaner', utils.clean_text(verbose=False)),
    ('vectorizer', CountVectorizer(max_features=None, lowercase=True, 
                        token_pattern = '(?u)(?:(?!\d)\w)+\\w+', analyzer = 'char',  
                        ngram_range=(2, 2), tokenizer = None, stop_words = None)),  

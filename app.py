@@ -42,9 +42,17 @@ from flask import Flask, request, render_template
 
 app = Flask(__name__)
 
-my_home_dir=os.environ['HOME'] 
-file_abs_path = os.path.join(my_home_dir,"utils.py")
-sys.path.append(file_abs_path)
+#my_home_dir=os.environ['HOME'] 
+#file_abs_path = os.path.join(my_home_dir,"utils.py")
+#sys.path.append(file_abs_path)
+
+
+def init():
+    global loaded_model
+    #model = joblib.load("model.h5")
+    filename = 'trained_model.pkl'
+    loaded_model = pickle.load(open(filename, 'rb'))
+    print('Model loaded.')
 
 
 @app.route('/')
@@ -55,11 +63,8 @@ def my_form():
 def my_form_post():
     text = request.form['text']
 
-    from utils import clean_text 
     filename = 'trained_model.pkl'
     loaded_model = pickle.load(open(filename, 'rb'))
-    print('Model loaded.')
-
 
     # Predict
     #---------
@@ -69,6 +74,12 @@ def my_form_post():
     processed_text = 'Prediction: {}'.format(glossary['label_desc'].get(fore, 'Unknown'))
     return processed_text
 
+
+if __name__ == "__main__":
+    #init()
+    #filename = 'trained_model.pkl'
+    #loaded_model = pickle.load(open(filename, 'rb'))
+    app.run(debug=True, host='0.0.0.0')
 
 """
 from flask import Flask
