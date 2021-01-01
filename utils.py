@@ -36,6 +36,8 @@ class clean_text(BaseEstimator, TransformerMixin):
             # remove punctuation from each word
             table = str.maketrans('', '', string.punctuation)
             stripped = [w.translate(table) for w in tokens]
+            #nonPunct = re.compile('.*[A-Za-z].*')    # remove punctuation
+            #raw_words = [w for w in tokens if nonPunct.match(w)]
             # remove remaining tokens that are not alphabetic
             #words = [word for word in stripped if word.isalpha()]    
             #words = [re.sub(r'\s+',' ',word) for word in stripped]

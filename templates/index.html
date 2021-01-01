@@ -5,12 +5,13 @@
     <title>Language identification</title>
 </head>
 <body>
-   <h1>Insert your text:</h1>
+   <h1>Insert text:</h1>
 
    <form method="POST">
-    <input name="text" maxlength="200" style="font-size: 11pt; height: 40px; width:290px;">
+    <input name="text" maxlength="200" style="font-size: 11pt; height: 30px; width:290px;">
     <input type="submit">
   </form>
-
+  <br>
+  <h2>Identified language: {{ result }}</h2>
 </body>
 </html>
