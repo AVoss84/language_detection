@@ -5,5 +5,5 @@ pathlib
 pandas
 nltk
 numpy>=1.18.5
-pickle
+#pickle
 PyYAML==5.3.1
