@@ -1,6 +1,6 @@
 scikit-learn==0.22.2.post1    
-flask
-flask_restful
+flask==1.1.2
+#flask_restful
 pathlib
 pandas
 nltk
