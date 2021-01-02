@@ -6,8 +6,6 @@ import numpy as np
 import pandas as pd
 from copy import deepcopy
 import yaml, pickle
-import requests
-from bs4 import BeautifulSoup
 
 #import requests
 #from bs4 import BeautifulSoup
