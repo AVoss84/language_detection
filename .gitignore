@@ -9,7 +9,7 @@ __pycache__/
 
 # File formats
 *.csv
-*.pkl
+#*.pkl
 
 # C extensions
 *.so
