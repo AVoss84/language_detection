@@ -1,3 +1,5 @@
 # Language detection
 
-Naive Bayes approach for language detection using bigrams and Wikipedia data taken from https://zenodo.org/record/841984#.X9-6t9hKiUn
+REST API for language detection using Naive Bayes approach with character bigram features. Training data: Wikipedia data taken from https://zenodo.org/record/841984#.X9-6t9hKiUn
+
+Implementation is based on Python 3.7.0 using Flask, NLTK and Sklearn. 
