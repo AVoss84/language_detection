@@ -23,4 +23,4 @@ REST API for language detection of 21 different languages using Naive Bayes appr
 - Romanian
 - Italian
 - Hungarian
-- Bulgarian
+- Chinese
