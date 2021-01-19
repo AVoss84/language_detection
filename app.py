@@ -52,6 +52,10 @@ def my_form_post():
         # Predict
         #---------
         fore = loaded_model.predict(pd.Series([text]))[0]
+
+        #class_probs = pd.DataFrame(trained.predict_proba(pd.Series([new_sent])), columns=trained.classes_, index=['Prob.']).T
+        #class_probs.sort_values(by = 'Prob.', ascending=False).head(10)
+
         #print('Prediction: {}'.format(glossary['label_desc'].get(fore, 'Unknown')))
         #processed_text = 'You inserted: {}'.format(text)
         processed_text = '"{}"'.format(glossary['label_desc'].get(fore, 'Unknown'))
