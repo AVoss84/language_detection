@@ -58,28 +58,38 @@ print(test_set.shape)
 #print(any(test.label.isin(filter_list)))
 
 
-from sklearn.pipeline import Pipeline
 from sklearn.naive_bayes import MultinomialNB
 from sklearn.linear_model import LogisticRegression
 from sklearn.preprocessing import StandardScaler
-from sklearn.neural_network import MLPClassifier
-from sklearn.feature_extraction.text import CountVectorizer, ENGLISH_STOP_WORDS
 from sklearn.metrics import confusion_matrix, classification_report
+from sklearn.feature_extraction.text import CountVectorizer
+from sklearn.feature_extraction.text import TfidfTransformer
+from sklearn.model_selection import GridSearchCV
+from sklearn.pipeline import Pipeline
+
+parameters = {
+    'vectorizer__max_df': (0.5, 0.75, 1.0),
+    # 'vectorizer__max_features': (None, 5000, 10000, 50000),
+    'vectorizer__ngram_range': ((2, 2), (1, 3), (2, 3), (3, 3), (3, 5))  # unigrams or bigrams
+}
 
 
 pipeline = Pipeline([
    ('cleaner', utils.clean_text(verbose=False)),
-   ('vectorizer', CountVectorizer(max_features=None, lowercase=True, 
-                       token_pattern = '(?u)(?:(?!\d)\w)+\\w+', analyzer = 'char',  
-                       ngram_range=(2, 2), tokenizer = None, stop_words = None)),  
+   #('cleaner', utils._clean_text(input_col = 'text', output_col = 'text')),
+   ('vectorizer', CountVectorizer(lowercase=True, 
+                       token_pattern = '(?u)(?:(?!\d)\w)+\\w+', analyzer = 'char_wb', tokenizer = None, stop_words = None)),  
    #('scaler', StandardScaler(with_mean=False)),
    ('model', MultinomialNB())
-   #('model' , MLPClassifier(solver='lbfgs', alpha=1e-5, hidden_layer_sizes=(500, ), random_state=1))
-   #('model', LogisticRegression())
 ])
 
-# Train:
-trained = pipeline.fit(train_set['text'], train_set['label'])
+grid_search = GridSearchCV(pipeline, parameters, n_jobs=-1, verbose=1)
+gs = grid_search.fit(train_set['text'], train_set['label'])
+
+best_parameters = grid_search.best_estimator_.get_params()
+
+# best_model refit:
+trained = grid_search.best_estimator_
 
 #post_prob = pipeline.predict_proba(train_set['text'])
 
@@ -87,11 +97,11 @@ trained = pipeline.fit(train_set['text'], train_set['label'])
 # Save model:
 #-------------
 filename = 'trained_model.pkl'
-pickle.dump(pipeline, open(filename, 'wb'))
+pickle.dump(trained, open(filename, 'wb'))
 print('Model saved!')
 
 # Predict:
-y_pred = pipeline.predict(test_set['text'])
+y_pred = trained.predict(test_set['text'])
 
 #print(confusion_matrix(test_set['label'], y_pred))
 print(classification_report(test_set['label'], y_pred))
@@ -110,9 +120,11 @@ new_sent = "Igår var jag i staden. Vädret var supertrevligt."    # sweden
 new_sent = "ฉันอยากบอกสามีของฉันว่าฉันอยากได้แหวนเพชร ฮี่ฮี่ฮี่"     # if not working check result of preprocessing!!
 
 # Predict
-fore = pipeline.predict(pd.Series([new_sent]))[0]
+fore = trained.predict(pd.Series([new_sent]))[0]
 print('Prediction: {}'.format(glossary['label_desc'].get(fore, 'Unknown')))
 
 #clt = clean_text(verbose=False)
 #clt.fit_transform(pd.Series([new_sent]))
     
+class_probs = pd.DataFrame(trained.predict_proba(pd.Series([new_sent])), columns=trained.classes_, index=['Prob.']).T
+class_probs.sort_values(by = 'Prob.', ascending=False).head(10)

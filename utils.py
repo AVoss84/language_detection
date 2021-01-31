@@ -9,8 +9,8 @@ from nltk.tokenize import sent_tokenize, word_tokenize
 from nltk.corpus import stopwords
 from copy import deepcopy
 
-nltk.download('punkt')
 nltk.download('stopwords')
+nltk.download('punkt')
  
 def read(file):
     '''Returns contents of a file'''
@@ -20,52 +20,19 @@ def read(file):
     return text
 
 
-class clean_text(BaseEstimator, TransformerMixin):
-    """Clean text corpus for model training"""
-    def __init__(self, verbose : bool = True):
-        self.verbose = verbose
-
-    def fit(self, X, y=None):
-        return self    
-    
-    def transform(self, X):    
-        corpus = deepcopy(X)
-        cleaned_text = []
-        # Preprocess:
-        for z, se in enumerate(corpus.tolist()):
-            if (z % 1000 == 0) & self.verbose: print('Processing document {}'.format(z))
-            tokens = word_tokenize(se)
-            # convert to lower case
-            tokens = [w.lower() for w in tokens]
-            # remove punctuation from each word
-            table = str.maketrans('', '', string.punctuation)
-            stripped = [w.translate(table) for w in tokens]
-            #nonPunct = re.compile('.*[A-Za-z].*')    # remove punctuation
-            #raw_words = [w for w in tokens if nonPunct.match(w)]
-            # remove remaining tokens that are not alphabetic
-            #words = [word for word in stripped if word.isalpha()]    
-            #words = [re.sub(r'\s+',' ',word) for word in stripped]
-            #words = [word.strip() for word in stripped]
-            # filter out stop words
-            #stop_words = set(stopwords.words('english'))
-            #words = [w for w in words if not w in stop_words]
-            cleaned_text.append(' '.join(stripped))
-        return cleaned_text  
-
-
-class preprocess_text(BaseEstimator, TransformerMixin):    
+class preprocess_text(TransformerMixin):    
    """
    This is an extension of the clean_text class below. 
    Stemming and stopwords filtering were added for preprocessing.
    """ 
-   def __init__(self, input_col, output_col, stemming = True, unique_tokens = True):
+   def __init__(self, input_col, output_col, stemming = True, unique_tokens = True, verbose = True):
       self.name = output_col
       self.input_col = input_col
       self.stemming = stemming
       self.unique_tokens = unique_tokens
-      if self.unique_tokens : print("Deduplicating tokens per document/sentence.")
+      if self.unique_tokens & verbose: print("Deduplicating tokens per document/sentence.")
       self.regexp = re.compile('(?u)(?:(?!\d)\w)+\\w+')        # remove punctuation and digits
-      if self.stemming : self.stemmer = PorterStemmer() ; print("Applying Porter stemming.")
+      if self.stemming : self.stemmer = PorterStemmer() ; #print("Applying Porter stemming.")
       self.stop_words = set(stopwords.words('english'))
 
    def fit(self, X, y=None):
@@ -96,7 +63,7 @@ class preprocess_text(BaseEstimator, TransformerMixin):
       return self.df_raw
 
 
-class _clean_text(BaseEstimator, TransformerMixin):
+class _clean_text(TransformerMixin):
     
    def __init__(self, input_col, output_col):
       self.name = output_col
@@ -143,4 +110,48 @@ class StringCleaner(TransformerMixin):
                 print("Replaced strings in columns: "+ str([col for col in self.mapping]))
             return X_temp
                 
+
+class prepare_corpus(TransformerMixin):
+    """Clean text corpus for model training"""
+    def __init__(self, verbose : bool = True, **in_out_cols):
+        self.verbose = verbose
+        self.in_out_cols = in_out_cols
+
+    def fit(self, X, y=None):
+        corpus = deepcopy(X)
+        my_cleaner = StringCleaner(mapping={}, verbose = self.verbose)   
+        df_out = my_cleaner.transform(corpus)
+        cleaner = preprocess_text(**self.in_out_cols, verbose = self.verbose)
+        self.cleaned_ouput = cleaner.fit_transform(df_out)
+        return self
     
+    def transform(self, X):    
+        return self.cleaned_ouput
+        
+
+class clean_text(TransformerMixin):
+
+    def __init__(self, verbose : bool = True):
+        self.verbose = verbose
+
+    def fit(self, X, y=None):
+        return self    
+    
+    def transform(self, X):    
+        corpus = deepcopy(X)
+        cleaned_text = []
+        # Preprocess:
+        for z, se in enumerate(corpus.tolist()):
+            if (z % 1000 == 0) & self.verbose: print('Processing document {}'.format(z))
+            tokens = word_tokenize(se)
+            # convert to lower case
+            tokens = [w.lower() for w in tokens]
+            # remove punctuation from each word
+            table = str.maketrans('', '', string.punctuation)
+            stripped = [w.translate(table) for w in tokens]
+            # remove remaining tokens that are not alphabetic
+            #words = [word for word in stripped if word.isalpha()]    # word.isalpha()
+            cleaned_text.append(' '.join(stripped))
+        return cleaned_text  
+        
+        
