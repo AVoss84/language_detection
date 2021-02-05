@@ -74,8 +74,6 @@ pipeline = Pipeline([
                        ngram_range=(2, 2), tokenizer = None, stop_words = None)),  
    #('scaler', StandardScaler(with_mean=False)),
    ('model', MultinomialNB())
-   #('model' , MLPClassifier(solver='lbfgs', alpha=1e-5, hidden_layer_sizes=(500, ), random_state=1))
-   #('model', LogisticRegression())
 ])
 
 # Train:
