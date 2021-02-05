@@ -8,7 +8,7 @@ from copy import deepcopy
 from importlib import reload
 import yaml, pickle
 #from utils import read, clean_text
-from utils import clean_text, read
+import utils
 
 reload(utils)
 
