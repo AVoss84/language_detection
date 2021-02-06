@@ -1,9 +1,10 @@
-scikit-learn==0.22.2.post1    
-flask==1.1.2
+#flask==1.1.2
 #flask_restful
-pathlib
+#pathlib
 pandas
 nltk
-numpy>=1.18.5
+#numpy>=1.18.5
 #pickle
 PyYAML==5.3.1
+scikit-learn
+#scikit-learn==0.22.2.post1
