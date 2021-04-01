@@ -27,11 +27,6 @@ def index():
     return render_template('index.html')
 
 
-@app.route('/result')
-def hello_admin():
-   return 'Hello Admin'
-
-
 # User/client sends/posts form data via browser to webserver
 # the text language is then classified:
 #----------------------------------------------------------
